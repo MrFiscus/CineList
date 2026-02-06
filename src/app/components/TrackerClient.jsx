@@ -298,13 +298,14 @@ export default function TrackerClient() {
     }
   };
 
-  const addMovie = async ({ title, review, posterUrl, posterData, countryKey, countryName }) => {
+  const addMovie = async ({ title, review, rating, posterUrl, posterData, countryKey, countryName }) => {
     const finalKey = countryKey || selectedKey;
     const finalCountry = countryName || selectedCountry?.name;
     if (!user || !finalKey || !finalCountry) return;
     const { data, error } = await supabase.from("movies").insert({
       user_id: user.id,
       title,
+      rating: rating || null,
       review,
       poster_url: posterUrl || null,
       poster_data: posterData || null,
@@ -422,7 +423,6 @@ export default function TrackerClient() {
         <section className="side-panel">
           <div className="controls">
             <button className="secondary" type="button" onClick={clearSelected}>Clear Selected</button>
-            <button className="secondary" type="button" onClick={clearAll}>Clear All</button>
           </div>
 
           <div className="selected">
@@ -469,10 +469,11 @@ export default function TrackerClient() {
                   <div>
                     <h3>{movie.title}</h3>
                     <p>{movie.review || "No review yet."}</p>
-                    <div className="meta">
-                      <span>{new Date(movie.created_at).toLocaleDateString()}</span>
-                      <button className="secondary" type="button" onClick={() => deleteMovie(movie.id)}>Delete</button>
-                    </div>
+            <div className="meta">
+              <span>{movie.rating ? `${movie.rating}/5` : "No rating"}</span>
+              <span>{new Date(movie.created_at).toLocaleDateString()}</span>
+              <button className="secondary" type="button" onClick={() => deleteMovie(movie.id)}>Delete</button>
+            </div>
                   </div>
                 </div>
               ))
@@ -540,6 +541,7 @@ function MovieForm({
   const posterFileRef = useRef(null);
   const reviewRef = useRef(null);
   const suggestTimerRef = useRef(null);
+  const [ratingValue, setRatingValue] = useState(0);
 
   const handleInput = () => {
     if (suggestTimerRef.current) clearTimeout(suggestTimerRef.current);
@@ -578,6 +580,7 @@ function MovieForm({
     }
 
     const finalCountry = countries.find((c) => c.key === finalKey)?.name || "";
+    const ratingNumber = ratingValue > 0 ? ratingValue : null;
 
     let posterData = "";
     const file = posterFileRef.current?.files?.[0];
@@ -593,6 +596,7 @@ function MovieForm({
     await onSubmit({
       title,
       review: reviewRef.current?.value?.trim() || "",
+      rating: ratingNumber,
       posterUrl: posterUrlRef.current?.value?.trim() || "",
       posterData,
       countryKey: finalKey,
@@ -600,6 +604,7 @@ function MovieForm({
     });
 
     event.target.reset();
+    setRatingValue(0);
     setSuggestions([]);
   };
 
@@ -621,14 +626,35 @@ function MovieForm({
         ))}
       </div>
 
-      <label htmlFor="posterUrl">Poster URL (optional)</label>
-      <input id="posterUrl" ref={posterUrlRef} type="url" placeholder="https://..." />
-
-      <label htmlFor="posterFile">Or upload a poster (optional)</label>
-      <input id="posterFile" ref={posterFileRef} type="file" accept="image/*" />
+      <div className="rating-header">
+        <label>Rating</label>
+        <div className="rating-value">
+          {ratingValue ? `${ratingValue} out of 5` : "Not rated"}
+        </div>
+      </div>
+      <div className="rating-picker" role="radiogroup" aria-label="Movie rating">
+        {[1, 2, 3, 4, 5].map((value) => (
+          <button
+            key={value}
+            type="button"
+            className={`rating-star${value <= ratingValue ? " filled" : ""}`}
+            aria-pressed={value <= ratingValue}
+            aria-label={`${value} star${value === 1 ? "" : "s"}`}
+            onClick={() => setRatingValue(value)}
+          >
+            ★
+          </button>
+        ))}
+      </div>
 
       <label htmlFor="movieReview">Review</label>
       <textarea id="movieReview" ref={reviewRef} rows={4} placeholder="Write your thoughts..."></textarea>
+
+      <label htmlFor="posterUrl">Poster (optional)</label>
+      <div className="poster-row">
+        <input id="posterUrl" ref={posterUrlRef} type="url" placeholder="https://..." />
+        <input id="posterFile" ref={posterFileRef} type="file" accept="image/*" />
+      </div>
 
       <button type="submit" className="primary">Add Movie</button>
       <div className="status">{status}</div>

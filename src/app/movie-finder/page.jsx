@@ -301,7 +301,7 @@ export default function MovieFinderPage() {
     <div className="app">
       <header className="hero">
         <div>
-          <div className="kicker">Movie tracking made simpler</div>
+          <div className="kicker">Movie tracking made simpler </div>
           <h1>Movie Finder</h1>
           <p>Search and curate titles you want to watch, then add them to a country on the main map.</p>
         </div>
