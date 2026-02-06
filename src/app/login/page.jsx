@@ -28,7 +28,7 @@ export default function LoginPage() {
     <div className="auth-page">
       <header className="auth-header">
         <div className="auth-logo">
-          <Image src={logo} alt="CineList" width={160} height={36} priority className="auth-logo-img" />
+          <Image src={logo} alt="Movie Tracker" width={160} height={36} priority className="auth-logo-img" />
         </div>
         <a className="auth-link" href="#feedback">Leave Feedback</a>
       </header>
