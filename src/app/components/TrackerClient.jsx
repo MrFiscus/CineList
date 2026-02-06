@@ -32,6 +32,7 @@ export default function TrackerClient() {
   const zoomRef = useRef(null);
   const mapGroupRef = useRef(null);
   const mapSizeRef = useRef({ width: 0, height: 0 });
+  const resizeObserverRef = useRef(null);
   const suggestTimerRef = useRef(null);
 
   const [user, setUser] = useState(null);
@@ -186,6 +187,7 @@ export default function TrackerClient() {
     mapRef.current.innerHTML = "";
     const width = mapRef.current.clientWidth;
     const height = mapRef.current.clientHeight;
+    if (!width || !height) return;
     mapSizeRef.current = { width, height };
 
     const projection = d3.geoNaturalEarth1().fitSize([width, height], {
@@ -236,10 +238,28 @@ export default function TrackerClient() {
 
   useEffect(() => {
     if (countries.length === 0) return;
-    renderMap();
-    const handleResize = () => renderMap();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const node = mapRef.current;
+    if (!node) return;
+
+    // Render once the container has a measurable size.
+    const renderIfReady = () => {
+      if (node.clientWidth && node.clientHeight) {
+        renderMap();
+      }
+    };
+
+    renderIfReady();
+    requestAnimationFrame(renderIfReady);
+
+    resizeObserverRef.current?.disconnect?.();
+    resizeObserverRef.current = new ResizeObserver(() => {
+      renderIfReady();
+    });
+    resizeObserverRef.current.observe(node);
+
+    return () => {
+      resizeObserverRef.current?.disconnect?.();
+    };
   }, [countries, mapMax]);
 
   const fetchOmdb = async (params) => {
@@ -295,7 +315,7 @@ export default function TrackerClient() {
       setMovies((prev) => [data, ...prev]);
       setStatus("Movie added.");
     } else {
-      setStatus("Unable to save movie.");
+      setStatus(error?.message || "Unable to save movie.");
     }
   };
 
