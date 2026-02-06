@@ -5,14 +5,15 @@ export default function AboutPage() {
     <div className="app">
       <header className="hero">
         <div>
-          <div className="kicker">Movie Tracker</div>
+          <div className="kicker">Movie tracking made simpler</div>
           <h1>About</h1>
-          <p>World Movie Map is a personal tracker for logging movies by country, with reviews and posters saved to your account.</p>
+          <p>CineList is a personal tracker for logging movies by country, with reviews and posters saved to your account.</p>
         </div>
         <div className="header-right">
           <nav className="top-nav" aria-label="Primary">
             <Link href="/" className="nav-link">Home</Link>
             <Link href="/movie-finder" className="nav-link">Movie Finder</Link>
+            <Link href="/movie-list" className="nav-link">Movie List</Link>
             <Link href="/logout" className="nav-link">Logout</Link>
           </nav>
         </div>

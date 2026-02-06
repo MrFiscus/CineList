@@ -19,7 +19,7 @@ export default function LogoutPage() {
     <div className="app">
       <header className="hero">
         <div>
-          <div className="kicker">Movie Tracker</div>
+          <div className="kicker">Movie tracking made simpler</div>
           <h1>Signing out...</h1>
         </div>
       </header>

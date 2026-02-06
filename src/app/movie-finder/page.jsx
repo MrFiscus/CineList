@@ -137,6 +137,7 @@ export default function MovieFinderPage() {
     mapRef.current.innerHTML = "";
     const width = mapRef.current.clientWidth;
     const height = mapRef.current.clientHeight;
+    if (!width || !height) return;
     mapSizeRef.current = { width, height };
 
     const projection = d3.geoNaturalEarth1().fitSize([width, height], {
@@ -182,12 +183,13 @@ export default function MovieFinderPage() {
   };
 
   useEffect(() => {
+    if (!user) return;
     if (countries.length === 0) return;
     renderMap();
     const handleResize = () => renderMap();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [countries]);
+  }, [countries, user]);
 
   useEffect(() => {
     updateMapClasses(foundKeys);
@@ -299,7 +301,7 @@ export default function MovieFinderPage() {
     <div className="app">
       <header className="hero">
         <div>
-          <div className="kicker">Movie Tracker</div>
+          <div className="kicker">Movie tracking made simpler</div>
           <h1>Movie Finder</h1>
           <p>Search and curate titles you want to watch, then add them to a country on the main map.</p>
         </div>
@@ -307,6 +309,7 @@ export default function MovieFinderPage() {
           <nav className="top-nav" aria-label="Primary">
             <Link href="/" className="nav-link">Home</Link>
             <Link href="/about" className="nav-link">About</Link>
+            <Link href="/movie-list" className="nav-link">Movie List</Link>
             <Link href="/logout" className="nav-link">Logout</Link>
           </nav>
         </div>

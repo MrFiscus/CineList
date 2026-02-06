@@ -237,6 +237,7 @@ export default function TrackerClient() {
   };
 
   useEffect(() => {
+    if (!user) return;
     if (countries.length === 0) return;
     const node = mapRef.current;
     if (!node) return;
@@ -260,7 +261,7 @@ export default function TrackerClient() {
     return () => {
       resizeObserverRef.current?.disconnect?.();
     };
-  }, [countries, mapMax]);
+  }, [countries, mapMax, user]);
 
   const fetchOmdb = async (params) => {
     const query = new URLSearchParams({ ...params, apikey: process.env.NEXT_PUBLIC_OMDB_KEY });
@@ -364,13 +365,14 @@ export default function TrackerClient() {
     <div className={`app ${mapMax ? "map-max" : ""}`}>
       <header className="hero">
         <div>
-          <div className="kicker">Movie Tracker</div>
-          <h1>World Movie Map</h1>
+          <div className="kicker">Movie tracking made simpler</div>
+          <h1>CineList</h1>
           <p>Click a country to log movies, reviews, and posters. Everything saves in your account.</p>
         </div>
         <div className="header-right">
           <nav className="top-nav" aria-label="Primary">
             <Link href="/about" className="nav-link">About</Link>
+            <Link href="/movie-list" className="nav-link">Movie List</Link>
             <Link href="/movie-finder" className="nav-link">Movie Finder</Link>
             <Link href="/logout" className="nav-link">Logout</Link>
           </nav>

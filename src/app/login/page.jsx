@@ -1,9 +1,11 @@
 ﻿"use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
+import logo from "../../../logo.png";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,32 +25,42 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="app">
-      <header className="hero">
-        <div>
-          <div className="kicker">Movie Tracker</div>
-          <h1>Login</h1>
-          <p>Sign in to access your movie map.</p>
+    <div className="auth-page">
+      <header className="auth-header">
+        <div className="auth-logo">
+          <Image src={logo} alt="CineList" width={160} height={36} priority className="auth-logo-img" />
         </div>
+        <a className="auth-link" href="#feedback">Leave Feedback</a>
       </header>
 
-      <main>
-        <section className="side-panel">
-          <form className="movie-form" onSubmit={handleSubmit}>
+      <main className="auth-main">
+        <section className="auth-card">
+          <div className="auth-title">Sign In to Get Started</div>
+          <div className="auth-divider">
+            <span>or</span>
+          </div>
+          <Link className="auth-link" href="/signup">Create a Account</Link>
+
+          <form className="auth-form" onSubmit={handleSubmit}>
             <label htmlFor="email">Email</label>
             <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
             <label htmlFor="password">Password</label>
             <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
-            <button type="submit" className="primary">Login</button>
+            <button type="submit" className="primary">Sign In</button>
             <div className="status">{status}</div>
-            <div className="selected-meta">
-              Need an account? <Link href="/signup">Create one</Link>.
-            </div>
           </form>
         </section>
       </main>
+
+      <footer className="auth-footer">
+        <div className="auth-footer-links">
+          <a href="#contact">Contact</a>
+          <a href="#support">Support</a>
+        </div>
+        <div className="auth-footer-copy">© 2026 CineList</div>
+      </footer>
     </div>
   );
 }

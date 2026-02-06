@@ -1,6 +1,6 @@
 ﻿/** @type {import('next').Metadata} */
 export const metadata = {
-  title: "World Movie Map",
+  title: "CineList",
   description: "Track movies by country with reviews and posters.",
 };
 

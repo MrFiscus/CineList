@@ -27,7 +27,7 @@ export default function SignupPage() {
     <div className="app">
       <header className="hero">
         <div>
-          <div className="kicker">Movie Tracker</div>
+          <div className="kicker">Movie tracking made simpler</div>
           <h1>Create Account</h1>
           <p>Sign up to save your movie map.</p>
         </div>
