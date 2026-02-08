@@ -1,11 +1,11 @@
 ﻿"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
+import SiteNav from "./SiteNav";
 
 const topoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 const OMDB_BASE = "https://www.omdbapi.com/";
@@ -365,19 +365,7 @@ export default function TrackerClient() {
   return (
     <div className={`app ${mapMax ? "map-max" : ""}`}>
       <header className="hero">
-        <div className="site-nav">
-          <div className="nav-brand">CineList</div>
-          <nav className="nav-links" aria-label="Primary">
-            <Link href="/" className="nav-link">Home</Link>
-            <Link href="/add-movies" className="nav-link">Add Movies</Link>
-            <Link href="/movie-list" className="nav-link">My List</Link>
-            <Link href="/about" className="nav-link">About</Link>
-          </nav>
-          <div className="nav-actions">
-            <Link href="/profile" className="nav-button primary">Profile</Link>
-            <Link href="/logout" className="nav-button ghost">Logout</Link>
-          </div>
-        </div>
+        <SiteNav />
         <div className="hero-body">
           <div>
             <p>Click a country to log movies, reviews, and posters. Everything saves in your account.</p>
@@ -425,7 +413,7 @@ export default function TrackerClient() {
           </div>
         </section>
 
-        <section className="side-panel">
+        <section className="side-panel-add-movies">
           <div className="controls">
             <button className="secondary" type="button" onClick={clearSelected}>Clear Selected</button>
           </div>

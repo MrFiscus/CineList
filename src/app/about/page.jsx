@@ -1,22 +1,10 @@
-﻿import Link from "next/link";
+import SiteNav from "../components/SiteNav";
 
 export default function AboutPage() {
   return (
     <div className="app">
       <header className="hero">
-        <div className="site-nav">
-          <div className="nav-brand">CineList</div>
-          <nav className="nav-links" aria-label="Primary">
-            <Link href="/" className="nav-link">Home</Link>
-            <Link href="/add-movies" className="nav-link">Add Movies</Link>
-            <Link href="/movie-list" className="nav-link">My List</Link>
-            <Link href="/about" className="nav-link">About</Link>
-          </nav>
-          <div className="nav-actions">
-            <Link href="/profile" className="nav-button primary">Profile</Link>
-            <Link href="/logout" className="nav-button ghost">Logout</Link>
-          </div>
-        </div>
+        <SiteNav />
         <div className="hero-body">
           <div>
             <div className="kicker">Movie tracking made simpler</div>

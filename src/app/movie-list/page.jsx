@@ -1,9 +1,9 @@
 ﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
+import SiteNav from "../components/SiteNav";
 
 export default function MovieListPage() {
   const router = useRouter();
@@ -193,19 +193,7 @@ export default function MovieListPage() {
   return (
     <div className="app movie-list-page">
       <header className="hero">
-        <div className="site-nav">
-          <div className="nav-brand">CineList</div>
-          <nav className="nav-links" aria-label="Primary">
-            <Link href="/" className="nav-link">Home</Link>
-            <Link href="/add-movies" className="nav-link">Add Movies</Link>
-            <Link href="/movie-list" className="nav-link">My List</Link>
-            <Link href="/about" className="nav-link">About</Link>
-          </nav>
-          <div className="nav-actions">
-            <Link href="/profile" className="nav-button primary">Profile</Link>
-            <Link href="/logout" className="nav-button ghost">Logout</Link>
-          </div>
-        </div>
+        <SiteNav />
         <div className="hero-body">
           <div>
             <h1>My List</h1>
