@@ -380,8 +380,6 @@ export default function TrackerClient() {
         </div>
         <div className="hero-body">
           <div>
-            <div className="kicker">Movie tracking made simpler</div>
-            <h1>CineList</h1>
             <p>Click a country to log movies, reviews, and posters. Everything saves in your account.</p>
           </div>
           <div className="stats">

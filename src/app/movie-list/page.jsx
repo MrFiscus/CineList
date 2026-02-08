@@ -208,7 +208,6 @@ export default function MovieListPage() {
         </div>
         <div className="hero-body">
           <div>
-            <div className="kicker">Movie tracking made simpler</div>
             <h1>My List</h1>
             <p>All movies you have added, sorted alphabetically.</p>
           </div>
