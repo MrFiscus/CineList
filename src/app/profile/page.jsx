@@ -9,10 +9,12 @@ export default function ProfilePage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [status, setStatus] = useState("Loading...");
+  const [displayName, setDisplayName] = useState("");
+  const [saveStatus, setSaveStatus] = useState("");
   const [stats, setStats] = useState({
     totalMovies: 0,
     countriesWithMovies: 0,
-    latestTitle: "—",
+    latestTitle: "-",
     latestDate: null,
   });
 
@@ -26,6 +28,14 @@ export default function ProfilePage() {
         return;
       }
       setUser(data.user);
+      const emailLocal = data.user.email ? data.user.email.split("@")[0] : "";
+      const initialName =
+        data.user.user_metadata?.display_name ||
+        data.user.user_metadata?.full_name ||
+        data.user.user_metadata?.name ||
+        emailLocal ||
+        "";
+      setDisplayName(initialName);
       setStatus("");
     };
     init();
@@ -49,7 +59,7 @@ export default function ProfilePage() {
       setStats({
         totalMovies: list.length,
         countriesWithMovies: countries.size,
-        latestTitle: list[0]?.title || "—",
+        latestTitle: list[0]?.title || "-",
         latestDate: list[0]?.created_at || null,
       });
     };
@@ -90,6 +100,42 @@ export default function ProfilePage() {
       <div className="sub-main">
         <section className="side-panel">
           <div className="selected">
+            <div className="selected-label">Display Name</div>
+            <div className="selected-meta">Shown on your home page when you log in.</div>
+            <div className="movie-form">
+              <label htmlFor="displayName">Display name</label>
+              <input
+                id="displayName"
+                type="text"
+                value={displayName}
+                onChange={(e) => {
+                  setDisplayName(e.target.value);
+                  setSaveStatus("");
+                }}
+              />
+              <button
+                className="primary"
+                type="button"
+                onClick={async () => {
+                  setSaveStatus("Saving...");
+                  const { data, error } = await supabase.auth.updateUser({
+                    data: { display_name: displayName.trim() },
+                  });
+                  if (error) {
+                    setSaveStatus(error.message || "Unable to update name.");
+                    return;
+                  }
+                  setUser(data.user);
+                  setSaveStatus("Saved.");
+                }}
+              >
+                Save Name
+              </button>
+              {saveStatus ? <div className="status">{saveStatus}</div> : null}
+            </div>
+          </div>
+
+          <div className="selected">
             <div className="selected-label">Library Stats</div>
             <div className="selected-name">{stats.totalMovies} movies logged</div>
             <div className="selected-meta">{stats.countriesWithMovies} countries with movies</div>
@@ -100,26 +146,23 @@ export default function ProfilePage() {
 
           <div className="selected">
             <div className="selected-label">Email</div>
-            <div className="selected-name">{user.email || "—"}</div>
+            <div className="selected-name">{user.email || "-"}</div>
             <div className="selected-meta">User ID: {user.id}</div>
           </div>
 
           <div className="selected">
             <div className="selected-label">Account Details</div>
-            <div className="selected-name">{user.user_metadata?.full_name || "CineList Member"}</div>
-            <div className="selected-meta">
-              Created: {user.created_at ? new Date(user.created_at).toLocaleString() : "—"}
+            <div className="selected-name">
+              {user.user_metadata?.display_name || user.user_metadata?.full_name || "CineList Member"}
             </div>
             <div className="selected-meta">
-              Last Sign In: {user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleString() : "—"}
+              Created: {user.created_at ? new Date(user.created_at).toLocaleString() : "-"}
+            </div>
+            <div className="selected-meta">
+              Last Sign In: {user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleString() : "-"}
             </div>
           </div>
 
-          <div className="selected">
-            <div className="selected-label">Provider</div>
-            <div className="selected-name">{user.app_metadata?.provider || "email"}</div>
-            <div className="selected-meta">Role: {user.role || "authenticated"}</div>
-          </div>
         </section>
       </div>
     </div>

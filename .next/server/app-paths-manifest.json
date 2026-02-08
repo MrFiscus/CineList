@@ -1,7 +1,7 @@
 {
-  "/add-movies/page": "app/add-movies/page.js",
   "/page": "app/page.js",
+  "/add-movies/page": "app/add-movies/page.js",
   "/about/page": "app/about/page.js",
   "/profile/page": "app/profile/page.js",
-  "/movie-list/page": "app/movie-list/page.js"
+  "/login/page": "app/login/page.js"
 }

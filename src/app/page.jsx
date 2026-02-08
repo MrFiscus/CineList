@@ -1,33 +1,65 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import SiteNav from "./components/SiteNav";
+import { supabase } from "../lib/supabaseClient";
+
 export default function Home() {
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    let mounted = true;
+    const init = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (!mounted) return;
+      const user = data.user;
+      if (!user) {
+        setUserName("");
+        return;
+      }
+      const nameFromMeta = user.user_metadata?.display_name || user.user_metadata?.full_name || user.user_metadata?.name;
+      const nameFromEmail = user.email ? user.email.split("@")[0] : "";
+      setUserName(nameFromMeta || nameFromEmail || "there");
+    };
+    init();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      const user = session?.user;
+      if (!user) {
+        setUserName("");
+        return;
+      }
+      const nameFromMeta = user.user_metadata?.display_name || user.user_metadata?.full_name || user.user_metadata?.name;
+      const nameFromEmail = user.email ? user.email.split("@")[0] : "";
+      setUserName(nameFromMeta || nameFromEmail || "there");
+    });
+
+    return () => {
+      mounted = false;
+      authListener?.subscription?.unsubscribe?.();
+    };
+  }, []);
+
+  const heading = userName ? `Welcome back, ${userName}` : "Movie Tracking Made Simpler";
+  const kicker = userName ? "Movie Tracking Made Simpler" : "Welcome to CineList";
+  const ctaLabel = userName ? "Add Movies" : "Get Started";
+
   return (
     <div className="app home-page home-dark">
       <header className="hero home-hero">
-        <div className="site-nav">
-          <div className="nav-brand">CineList</div>
-          <nav className="nav-links" aria-label="Primary">
-            <a href="/" className="nav-link">Home</a>
-            <a href="/add-movies" className="nav-link">Add Movies</a>
-            <a href="/movie-list" className="nav-link">My List</a>
-            <a href="/about" className="nav-link">About</a>
-          </nav>
-          <div className="nav-actions">
-            <a href="/profile" className="nav-button primary">Profile</a>
-            <a href="/logout" className="nav-button ghost">Logout</a>
-          </div>
-        </div>
+        <SiteNav />
       </header>
 
-      
-        <section className=" home-content home-main">
+      <main className="home-content">
+        <section className="home-main">
           <div className="home-hero-copy">
-            <div className="kicker">Welcome to CineList</div>
-            <h1>Movie Tracking Made Simpler</h1>
+            <div className="kicker">{kicker}</div>
+            <h1>{heading}</h1>
             <p>Build your map, log the films you watch, and keep everything organized.</p>
-            <a className="primary-cta" href="/add-movies">Get Started</a>
+            <a className="primary-cta" href="/add-movies">{ctaLabel}</a>
           </div>
         </section>
-
-  
+      </main>
     </div>
   );
 }

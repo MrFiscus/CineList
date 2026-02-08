@@ -602,7 +602,15 @@ function MovieForm({
   };
 
   return (
-    <form className="movie-form" onSubmit={handleSubmit}>
+    <form
+      className="movie-form"
+      onSubmit={handleSubmit}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" && event.target?.tagName !== "TEXTAREA") {
+          event.preventDefault();
+        }
+      }}
+    >
       <label htmlFor="movieTitle">Movie title</label>
       <input id="movieTitle" ref={titleRef} type="text" placeholder="Enter a movie title" required autoComplete="off" onInput={handleInput} onBlur={handleBlur} />
       <div className="suggestions">
