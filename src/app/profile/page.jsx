@@ -28,12 +28,11 @@ export default function ProfilePage() {
         return;
       }
       setUser(data.user);
-      const emailLocal = data.user.email ? data.user.email.split("@")[0] : "";
       const initialName =
         data.user.user_metadata?.display_name ||
         data.user.user_metadata?.full_name ||
         data.user.user_metadata?.name ||
-        emailLocal ||
+        data.user.email ||
         "";
       setDisplayName(initialName);
       setStatus("");
@@ -100,7 +99,7 @@ export default function ProfilePage() {
       <div className="sub-main">
         <section className="side-panel">
           <div className="selected">
-            <div className="selected-label">Display Name</div>
+            <div className="selected-label">User Name</div>
             <div className="selected-meta">Shown on your home page when you log in.</div>
             <div className="movie-form">
               <label htmlFor="displayName">Display name</label>
