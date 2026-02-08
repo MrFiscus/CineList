@@ -7,24 +7,41 @@ export default function AboutPage() {
         <SiteNav />
         <div className="hero-body">
           <div>
-            <div className="kicker">Movie tracking made simpler</div>
+            <div className="kicker">CineList lets you...</div>
             <h1>About</h1>
             <p>CineList is a personal tracker for logging movies by country, with reviews and posters saved to your account.</p>
           </div>
         </div>
       </header>
 
-      <main>
-        <section className="side-panel">
-          <div className="selected">
-            <div className="selected-label">How it works</div>
-            <div className="selected-name">Your movie map</div>
-            <div className="selected-meta">
-              Click a country on the map, add a movie title, optional poster, and review. Countries with at least one movie are highlighted. Your data stays in your account.
-            </div>
-          </div>
+      <div className="sub-main">
+        <section className="about-grid">
+          <article className="about-card">
+            <div className="about-icon">👁️</div>
+            <div className="about-text">Keep track of every film you have watched and organize it by country on the map.</div>
+          </article>
+          <article className="about-card">
+            <div className="about-icon">❤️</div>
+            <div className="about-text">Save favorites with ratings and quick notes so the movies you love stand out.</div>
+          </article>
+          <article className="about-card">
+            <div className="about-icon">📝</div>
+            <div className="about-text">Write and save short reviews for each movie so you remember what you felt.</div>
+          </article>
+          <article className="about-card">
+            <div className="about-icon">⭐</div>
+            <div className="about-text">Rate every film on a five‑star scale and see your library grow over time.</div>
+          </article>
+          <article className="about-card">
+            <div className="about-icon">📅</div>
+            <div className="about-text">Keep a diary with dates and import your history using CSV when needed.</div>
+          </article>
+          <article className="about-card">
+            <div className="about-icon">🗂️</div>
+            <div className="about-text">Browse everything in My List and manage your collection in one place.</div>
+          </article>
         </section>
-      </main>
+      </div>
     </div>
   );
 }

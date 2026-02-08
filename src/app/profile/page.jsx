@@ -102,7 +102,7 @@ export default function ProfilePage() {
             <div className="selected-label">User Name</div>
             <div className="selected-meta">Shown on your home page when you log in.</div>
             <div className="movie-form">
-              <label htmlFor="displayName">Display name</label>
+              <label htmlFor="displayName"></label>
               <input
                 id="displayName"
                 type="text"
