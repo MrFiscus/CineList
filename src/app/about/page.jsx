@@ -4,18 +4,25 @@ export default function AboutPage() {
   return (
     <div className="app">
       <header className="hero">
-        <div>
-          <div className="kicker">Movie tracking made simpler</div>
-          <h1>About</h1>
-          <p>CineList is a personal tracker for logging movies by country, with reviews and posters saved to your account.</p>
-        </div>
-        <div className="header-right">
-          <nav className="top-nav" aria-label="Primary">
+        <div className="site-nav">
+          <div className="nav-brand">CineList</div>
+          <nav className="nav-links" aria-label="Primary">
             <Link href="/" className="nav-link">Home</Link>
-            <Link href="/movie-finder" className="nav-link">Movie Finder</Link>
-            <Link href="/movie-list" className="nav-link">Movie List</Link>
-            <Link href="/logout" className="nav-link">Logout</Link>
+            <Link href="/add-movies" className="nav-link">Add Movies</Link>
+            <Link href="/movie-list" className="nav-link">My List</Link>
+            <Link href="/about" className="nav-link">About</Link>
           </nav>
+          <div className="nav-actions">
+            <Link href="/profile" className="nav-button primary">Profile</Link>
+            <Link href="/logout" className="nav-button ghost">Logout</Link>
+          </div>
+        </div>
+        <div className="hero-body">
+          <div>
+            <div className="kicker">Movie tracking made simpler</div>
+            <h1>About</h1>
+            <p>CineList is a personal tracker for logging movies by country, with reviews and posters saved to your account.</p>
+          </div>
         </div>
       </header>
 

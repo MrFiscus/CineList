@@ -10,6 +10,8 @@ export default function MovieListPage() {
   const [user, setUser] = useState(null);
   const [movies, setMovies] = useState([]);
   const [status, setStatus] = useState("Loading...");
+  const [importStatus, setImportStatus] = useState("");
+  const [importing, setImporting] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -64,27 +66,169 @@ export default function MovieListPage() {
     return [...movies].sort((a, b) => (a.title || "").localeCompare(b.title || "", undefined, { sensitivity: "base" }));
   }, [movies]);
 
+  const parseCsv = (text) => {
+    const rows = [];
+    let current = [];
+    let value = "";
+    let inQuotes = false;
+    for (let i = 0; i < text.length; i += 1) {
+      const char = text[i];
+      const next = text[i + 1];
+      if (char === "\"") {
+        if (inQuotes && next === "\"") {
+          value += "\"";
+          i += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+        continue;
+      }
+      if (!inQuotes && (char === "," || char === "\n" || char === "\r")) {
+        if (char === "\r" && next === "\n") i += 1;
+        current.push(value);
+        value = "";
+        if (char === "\n" || char === "\r") {
+          rows.push(current);
+          current = [];
+        }
+        continue;
+      }
+      value += char;
+    }
+    if (value.length || current.length) {
+      current.push(value);
+      rows.push(current);
+    }
+    return rows.filter((row) => row.some((cell) => String(cell || "").trim().length));
+  };
+
+  const handleCsvImport = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file || !user) return;
+    setImportStatus("");
+    setImporting(true);
+    try {
+      const text = await file.text();
+      const rows = parseCsv(text);
+      if (rows.length < 2) {
+        setImportStatus("CSV needs a header row and at least one movie row.");
+        return;
+      }
+
+      const headers = rows[0].map((h) => String(h || "").trim().toLowerCase());
+      const getCell = (row, name) => {
+        const idx = headers.indexOf(name);
+        return idx >= 0 ? String(row[idx] || "").trim() : "";
+      };
+      const getAny = (row, names) => {
+        for (const name of names) {
+          const value = getCell(row, name);
+          if (value) return value;
+        }
+        return "";
+      };
+
+      const payload = rows.slice(1).map((row) => {
+        const title = getAny(row, ["title", "name"]);
+        const ratingRaw = getCell(row, "rating");
+        const ratingFloat = Number.parseFloat(ratingRaw);
+        const ratingNum = Number.isFinite(ratingFloat) ? Math.round(ratingFloat) : NaN;
+        const createdAtRaw = getAny(row, ["created_at", "watched date", "date"]);
+        const createdAt = createdAtRaw ? new Date(createdAtRaw).toISOString() : new Date().toISOString();
+
+        return {
+          user_id: user.id,
+          title,
+          review: getCell(row, "review") || null,
+          rating: Number.isFinite(ratingNum) ? ratingNum : null,
+          poster_url: getCell(row, "poster_url") || null,
+          poster_data: getCell(row, "poster_data") || null,
+          country_key: getCell(row, "country_key") || null,
+          country_name: getCell(row, "country_name") || null,
+          created_at: createdAt,
+        };
+      }).filter((movie) => movie.title);
+
+      if (payload.length === 0) {
+        setImportStatus("No valid rows found. Make sure the CSV has a title column.");
+        return;
+      }
+
+      const inserted = [];
+      const batchSize = 50;
+      for (let i = 0; i < payload.length; i += batchSize) {
+        const chunk = payload.slice(i, i + batchSize);
+        const { data, error } = await supabase.from("movies").insert(chunk).select("*");
+        if (error) {
+          setImportStatus(error.message || "Unable to import movies.");
+          return;
+        }
+        if (data) inserted.push(...data);
+      }
+
+      setMovies((prev) => [...inserted, ...prev]);
+      setImportStatus(`Imported ${inserted.length} movie(s).`);
+      event.target.value = "";
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const downloadTemplate = () => {
+    const template = [
+      "title,review,rating,poster_url,poster_data,country_key,country_name,release_year,year,created_at",
+      "\"Spirited Away\",\"Beautiful animation\",5,https://example.com/poster.jpg,,JPN,Japan,2001,2001,2023-11-05",
+    ].join("\n");
+    const blob = new Blob([template], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "my-list-template.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="app movie-list-page">
       <header className="hero">
-        <div>
-          <div className="kicker">Movie tracking made simpler</div>
-          <h1>Movie List</h1>
-          <p>All movies you have added, sorted alphabetically.</p>
-        </div>
-        <div className="header-right">
-          <nav className="top-nav" aria-label="Primary">
+        <div className="site-nav">
+          <div className="nav-brand">CineList</div>
+          <nav className="nav-links" aria-label="Primary">
             <Link href="/" className="nav-link">Home</Link>
+            <Link href="/add-movies" className="nav-link">Add Movies</Link>
+            <Link href="/movie-list" className="nav-link">My List</Link>
             <Link href="/about" className="nav-link">About</Link>
-            <Link href="/movie-list" className="nav-link">Movie List</Link>
-            <Link href="/movie-finder" className="nav-link">Movie Finder</Link>
-            <Link href="/logout" className="nav-link">Logout</Link>
           </nav>
+          <div className="nav-actions">
+            <Link href="/profile" className="nav-button primary">Profile</Link>
+            <Link href="/logout" className="nav-button ghost">Logout</Link>
+          </div>
+        </div>
+        <div className="hero-body">
+          <div>
+            <div className="kicker">Movie tracking made simpler</div>
+            <h1>My List</h1>
+            <p>All movies you have added, sorted alphabetically.</p>
+          </div>
         </div>
       </header>
 
       <main className="movie-list-main">
         <section className="side-panel movie-list-panel">
+          <div className="import-panel">
+            <div className="import-title">Import CSV</div>
+            <div className="import-help">Headers supported: title/name (required), review, rating, poster_url, country_key, country_name, created_at/watched date/date.</div>
+            <div className="import-actions">
+              <button className="secondary" type="button" onClick={downloadTemplate}>Download Template</button>
+              <label className="import-file">
+                <input type="file" accept=".csv,text/csv" onChange={handleCsvImport} disabled={importing} />
+                {importing ? "Importing..." : "Choose CSV"}
+              </label>
+            </div>
+            {importStatus ? <div className="status">{importStatus}</div> : null}
+          </div>
           {status ? <div className="status">{status}</div> : null}
           <div className="movie-list-header">
           

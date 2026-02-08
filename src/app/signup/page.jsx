@@ -1,9 +1,11 @@
 ﻿"use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabaseClient";
+import logo from "../../../logo.png";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -24,18 +26,23 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="app">
-      <header className="hero">
-        <div>
-          <div className="kicker">Movie tracking made simpler</div>
-          <h1>Create Account</h1>
-          <p>Sign up to save your movie map.</p>
+    <div className="auth-page">
+      <header className="auth-header">
+        <div className="auth-logo">
+          <Image src={logo} alt="Movie Tracker" width={160} height={36} priority className="auth-logo-img" />
         </div>
+        <a className="auth-link" href="#feedback">Leave Feedback</a>
       </header>
 
-      <main>
-        <section className="side-panel">
-          <form className="movie-form" onSubmit={handleSubmit}>
+      <main className="auth-main">
+        <section className="auth-card">
+          <div className="auth-title">Create Account</div>
+          <div className="auth-divider">
+            <span>or</span>
+          </div>
+          <Link className="auth-link" href="/login">Sign In</Link>
+
+          <form className="auth-form" onSubmit={handleSubmit}>
             <label htmlFor="email">Email</label>
             <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
 
@@ -44,12 +51,17 @@ export default function SignupPage() {
 
             <button type="submit" className="primary">Create Account</button>
             <div className="status">{status}</div>
-            <div className="selected-meta">
-              Already have an account? <Link href="/login">Log in</Link>.
-            </div>
           </form>
         </section>
       </main>
+
+      <footer className="auth-footer">
+        <div className="auth-footer-links">
+          <a href="#contact">Contact</a>
+          <a href="#support">Support</a>
+        </div>
+        <div className="auth-footer-copy">© 2026 CineList</div>
+      </footer>
     </div>
   );
 }
