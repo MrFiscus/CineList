@@ -3,6 +3,6 @@
   "/movie-list/page": "app/movie-list/page.js",
   "/about/page": "app/about/page.js",
   "/add-movies/page": "app/add-movies/page.js",
-  "/page": "app/page.js",
-  "/profile/page": "app/profile/page.js"
+  "/profile/page": "app/profile/page.js",
+  "/page": "app/page.js"
 }
