@@ -8538,6 +8538,18 @@ button.secondary {
   width: 50vw;
 }
 
+.selected.selected-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.selected.selected-active .selected-label,
+.selected.selected-active .selected-name,
+.selected.selected-active .selected-meta {
+  color: #ffffff;
+}
+
 .profile-card {
   transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }

@@ -421,7 +421,7 @@ export default function TrackerClient() {
             <Button className="secondary" variant="unstyled" type="button" onClick={clearSelected}>Clear Selected</Button>
           </div>
 
-          <div className="selected">
+          <div className={`selected${selectedCountry ? " selected-active" : ""}`}>
             <div className="selected-label">Selected Country</div>
             <div className="selected-name">{selectedCountry ? selectedCountry.name : "Select a country"}</div>
             <div className="selected-meta">{selectedCountry ? `${selectedMovies.length} movie(s) logged` : "No country selected"}</div>
