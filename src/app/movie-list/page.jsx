@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@mantine/core";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
 import { supabase } from "../../lib/supabaseClient";
@@ -459,8 +460,8 @@ export default function MovieListPage() {
                     
                 
                     <div className="movie-actions">
-                      <button className="secondary" type="button" onClick={() => startEdit(movie)}>Edit</button>
-                      <button className="secondary" type="button" onClick={() => deleteMovie(movie.id)}>Delete</button>
+                      <Button className="secondary" variant="unstyled" type="button" onClick={() => startEdit(movie)}>Edit</Button>
+                      <Button className="secondary" variant="unstyled" type="button" onClick={() => deleteMovie(movie.id)}>Delete</Button>
                     </div>
                   </div>
                   {editingId === movie.id ? (
@@ -509,8 +510,8 @@ export default function MovieListPage() {
                       />
 
                       <div className="controls">
-                        <button className="primary" type="submit">Save</button>
-                        <button className="secondary" type="button" onClick={() => setEditingId(null)}>Cancel</button>
+                        <Button className="primary" variant="unstyled" type="submit">Save</Button>
+                        <Button className="secondary" variant="unstyled" type="button" onClick={() => setEditingId(null)}>Cancel</Button>
                       </div>
                       {editStatus ? <div className="status">{editStatus}</div> : null}
                     </form>

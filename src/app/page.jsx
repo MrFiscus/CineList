@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Button } from "@mantine/core";
 import SiteNav from "./components/SiteNav";
 import { supabase } from "../lib/supabaseClient";
 
@@ -55,8 +57,25 @@ export default function Home() {
           <div className="home-hero-copy">
             <div className="kicker">{kicker}</div>
             <h1>{heading}</h1>
-            <p>Build your map, log the films you watch, and keep everything organized.</p>
-            <a className="primary-cta" href="/add-movies">{ctaLabel}</a>
+            <p>Track the films you watch, Build your map, and keep everything organized.</p>
+            <div className="home-cta-row">
+              <Link href="/add-movies" className="btn-53" aria-label={ctaLabel}>
+                <span className="original">{ctaLabel}</span>
+                <span className="letters" aria-hidden="true">
+                  {ctaLabel.split("").map((char, index) => (
+                    <span key={`${char}-${index}`}>{char === " " ? "\u00A0" : char}</span>
+                  ))}
+                </span>
+              </Link>
+              <Link href="/about" className="btn-53 btn-ghost" aria-label="Learn More">
+                <span className="original">Learn More</span>
+                <span className="letters" aria-hidden="true">
+                  {"Learn More".split("").map((char, index) => (
+                    <span key={`${char}-${index}`}>{char === " " ? "\u00A0" : char}</span>
+                  ))}
+                </span>
+              </Link>
+            </div>
           </div>
         </section>
       </main>

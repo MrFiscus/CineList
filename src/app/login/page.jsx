@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Button } from "@mantine/core";
 import { supabase } from "../../lib/supabaseClient";
 import logo from "../../../logo.png";
 
@@ -48,7 +49,7 @@ export default function LoginPage() {
             <label htmlFor="password">Password</label>
             <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
 
-            <button type="submit" className="primary">Sign In</button>
+            <Button type="submit" variant="unstyled" className="primary">Sign In</Button>
             <div className="status">{status}</div>
           </form>
         </section>

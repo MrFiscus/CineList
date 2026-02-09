@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@mantine/core";
 import { supabase } from "../../lib/supabaseClient";
 import SiteNav from "../components/SiteNav";
 
@@ -112,8 +113,9 @@ export default function ProfilePage() {
                   setSaveStatus("");
                 }}
               />
-              <button
+              <Button
                 className="primary"
+                variant="unstyled"
                 type="button"
                 onClick={async () => {
                   setSaveStatus("Saving...");
@@ -129,7 +131,7 @@ export default function ProfilePage() {
                 }}
               >
                 Save Name
-              </button>
+              </Button>
               {saveStatus ? <div className="status">{saveStatus}</div> : null}
             </div>
           </div>

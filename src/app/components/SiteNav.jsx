@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Button } from "@mantine/core";
 import { supabase } from "../../lib/supabaseClient";
 
 export default function SiteNav() {
@@ -41,8 +42,26 @@ export default function SiteNav() {
         <Link href="/about" className="nav-link" onClick={handleNavClick}>About</Link>
       </nav>
       <div className="nav-actions">
-        <Link href={primaryHref} className="nav-button primary" onClick={handleNavClick}>{primaryLabel}</Link>
-        {user ? <Link href="/logout" className="nav-button ghost" onClick={handleNavClick}>Logout</Link> : null}
+        <Button
+          component={Link}
+          href={primaryHref}
+          variant="unstyled"
+          className="nav-button primary"
+          onClick={handleNavClick}
+        >
+          {primaryLabel}
+        </Button>
+        {user ? (
+          <Button
+            component={Link}
+            href="/logout"
+            variant="unstyled"
+            className="nav-button ghost"
+            onClick={handleNavClick}
+          >
+            Logout
+          </Button>
+        ) : null}
       </div>
       <button
         className="nav-toggle"

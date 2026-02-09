@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
 import { useRouter } from "next/navigation";
+import { Button } from "@mantine/core";
 import { supabase } from "../../lib/supabaseClient";
 import SiteNav from "./SiteNav";
 
@@ -385,8 +386,9 @@ export default function TrackerClient() {
 
       <main>
         <section className="map-panel">
-          <button
+          <Button
             className="map-toggle"
+            variant="unstyled"
             type="button"
             onClick={() => {
               document.body.classList.toggle("map-maximized");
@@ -394,9 +396,10 @@ export default function TrackerClient() {
             }}
           >
             {mapMax ? "Restore Map" : "Maximize Map"}
-          </button>
-          <button
+          </Button>
+          <Button
             className="map-reset"
+            variant="unstyled"
             type="button"
             onClick={() => {
               if (!svgRef.current || !zoomRef.current) return;
@@ -404,7 +407,7 @@ export default function TrackerClient() {
             }}
           >
             Reset Zoom
-          </button>
+          </Button>
           <div id="map" ref={mapRef} aria-label="Interactive world map"></div>
           <div id="mapTooltip" ref={tooltipRef} className="map-tooltip" role="status" aria-live="polite"></div>
           <div className="legend">
@@ -415,7 +418,7 @@ export default function TrackerClient() {
 
         <section className="side-panel-add-movies">
           <div className="controls">
-            <button className="secondary" type="button" onClick={clearSelected}>Clear Selected</button>
+            <Button className="secondary" variant="unstyled" type="button" onClick={clearSelected}>Clear Selected</Button>
           </div>
 
           <div className="selected">
@@ -465,8 +468,8 @@ export default function TrackerClient() {
             <div className="meta">
               <span>{movie.rating ? `${movie.rating}/5` : "No rating"}</span>
               <span>{new Date(movie.created_at).toLocaleDateString()}</span>
-              <button className="secondary" type="button" onClick={() => deleteMovie(movie.id)}>Delete</button>
-            </div>
+                      <Button className="secondary" variant="unstyled" type="button" onClick={() => deleteMovie(movie.id)}>Delete</Button>
+                    </div>
                   </div>
                 </div>
               ))
@@ -657,7 +660,7 @@ function MovieForm({
         <input id="posterFile" ref={posterFileRef} type="file" accept="image/*" />
       </div>
 
-      <button type="submit" className="primary">Add Movie</button>
+      <Button type="submit" variant="unstyled" className="primary">Add Movie</Button>
       <div className="status">{status}</div>
     </form>
   );
