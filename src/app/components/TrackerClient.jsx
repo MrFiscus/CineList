@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import { feature } from "topojson-client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@mantine/core";
 import { supabase } from "../../lib/supabaseClient";
 import SiteNav from "./SiteNav";
@@ -372,10 +373,10 @@ export default function TrackerClient() {
             <p>Click a country to log movies, reviews, and posters. Everything saves in your account.</p>
           </div>
           <div className="stats">
-            <div className="stat">
+            <Link href="/movie-list" className="stat stat-link">
               <div className="stat-label">Countries With Movies</div>
               <div className="stat-value">{checkedCount}</div>
-            </div>
+            </Link>
             <div className="stat">
               <div className="stat-label">Remaining Countries</div>
               <div className="stat-value">{Math.max(0, countries.length - checkedCount)}</div>
@@ -538,6 +539,7 @@ function MovieForm({
   const reviewRef = useRef(null);
   const suggestTimerRef = useRef(null);
   const [ratingValue, setRatingValue] = useState(0);
+  const allowedPosterTypes = ["image/png", "image/jpeg"];
 
   const handleInput = () => {
     if (suggestTimerRef.current) clearTimeout(suggestTimerRef.current);
@@ -580,6 +582,11 @@ function MovieForm({
 
     let posterData = "";
     const file = posterFileRef.current?.files?.[0];
+    if (file && !allowedPosterTypes.includes(file.type)) {
+      setStatus("Please upload a PNG or JPEG image.");
+      if (posterFileRef.current) posterFileRef.current.value = "";
+      return;
+    }
     if (file) {
       posterData = await new Promise((resolve) => {
         const reader = new FileReader();
@@ -657,7 +664,19 @@ function MovieForm({
       <label htmlFor="posterUrl">Poster (optional)</label>
       <div className="poster-row">
         <input id="posterUrl" ref={posterUrlRef} type="url" placeholder="https://..." />
-        <input id="posterFile" ref={posterFileRef} type="file" accept="image/*" />
+        <input
+          id="posterFile"
+          ref={posterFileRef}
+          type="file"
+          accept="image/png,image/jpeg"
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            if (file && !allowedPosterTypes.includes(file.type)) {
+              setStatus("Please upload a PNG or JPEG image.");
+              event.target.value = "";
+            }
+          }}
+        />
       </div>
 
       <Button type="submit" variant="unstyled" className="primary">Add Movie</Button>
