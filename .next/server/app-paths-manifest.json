@@ -1,8 +1,8 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
   "/login/page": "app/login/page.js",
-  "/add-movies/page": "app/add-movies/page.js",
   "/profile/page": "app/profile/page.js",
-  "/movie-list/page": "app/movie-list/page.js",
-  "/about/page": "app/about/page.js"
+  "/add-movies/page": "app/add-movies/page.js",
+  "/movie-list/page": "app/movie-list/page.js"
 }

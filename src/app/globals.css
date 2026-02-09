@@ -746,6 +746,7 @@ button.secondary {
   background: var(--accent);
   border-color: var(--accent);
   color: #ffffff;
+  scale: 1.03;
 }
 
 .movie-card:hover h3,
