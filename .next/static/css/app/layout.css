@@ -9785,6 +9785,11 @@ button.secondary:not(.nav-button):hover,
   text-shadow: 0 0 12px rgba(255, 255, 255, 0.85);
 }
 
+.home-dark .nav-links .nav-link:hover::before,
+.home-dark .nav-links .nav-link:hover::after {
+  border-color: #ffffff;
+}
+
 .home-dark .nav-toggle {
   border-color: rgba(255, 255, 255, 0.35);
   background: rgba(0, 0, 0, 0.2);
