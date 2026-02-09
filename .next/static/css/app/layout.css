@@ -60,8 +60,19 @@ a {
 .kicker {
   text-transform: uppercase;
   letter-spacing: 0.24em;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--graphite);
+
+}
+
+.kicker-signout{
+    text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 14px;
+  color: var(--graphite);
+  padding-left: 40vw;
+  padding-top: 50vh;
+
 }
 
 h1 {
@@ -83,7 +94,7 @@ h1 {
   grid-gap: 16px;
   gap: 16px;
   width: 100%;
-  padding: 10px 14px;
+  padding: 20px 25px;
   border: 1px solid #d0cdd0;
   background: #fbfcff;
   /* box-shadow: 0 12px 24px var(--shadow); */
@@ -549,6 +560,11 @@ button.secondary {
   gap: 10px;
 }
 
+.edit-form {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+}
+
 .movie-card {
   grid-template-columns: 72px 1fr;
 }
@@ -579,6 +595,18 @@ button.secondary {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+.movie-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.movie-actions button {
+  min-width: 96px;
+  justify-content: center;
 }
 
 .search label {
