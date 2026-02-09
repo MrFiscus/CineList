@@ -221,8 +221,6 @@ export default function MovieListPage() {
           
             <div className="movie-list-col day">Date</div>
             <div className="movie-list-col film">Movie</div>
-         
-          
             <div className="movie-list-col edit">Edit</div>
           </div>
           <div className="movie-list movie-list-grid">
@@ -265,9 +263,8 @@ export default function MovieListPage() {
                       {movie.rating ? "★".repeat(movie.rating) : "—"}
                       {movie.rating && movie.rating < 5 ? <span className="rating-muted">{"★".repeat(5 - movie.rating)}</span> : null}
                     </div>
-                    <div className="movie-like">♡</div>
-                    <div className="movie-rewatch">—</div>
-                    <div className="movie-review">—</div>
+                    
+                
                     <div className="movie-actions">
                       <button className="secondary" type="button" onClick={() => deleteMovie(movie.id)}>Delete</button>
                     </div>
