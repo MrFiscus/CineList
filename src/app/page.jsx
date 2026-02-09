@@ -17,7 +17,7 @@ const HOME_IMAGES = [
   "/images/whiplash.jpg",
 ];
 
-const HOME_GRADIENT = "linear-gradient(90deg, rgba(2, 17, 27, 0.79) 0%, rgba(48, 41, 47, 1) 50%, rgba(63, 64, 69, 0.84) 100%)";
+const HOME_GRADIENT = "linear-gradient(90deg,rgba(2, 17, 27, 0.85) 0%, rgba(48, 41, 47, 0.91) 50%, rgba(63, 64, 69, 0.88) 100%)";
 
 export default function Home() {
   const [userName, setUserName] = useState("");
