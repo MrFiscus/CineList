@@ -377,8 +377,8 @@ export default function TrackerClient() {
               <div className="stat-value">{checkedCount}</div>
             </div>
             <div className="stat">
-              <div className="stat-label">Total Countries</div>
-              <div className="stat-value">{countries.length}</div>
+              <div className="stat-label">Remaining Countries</div>
+              <div className="stat-value">{Math.max(0, countries.length - checkedCount)}</div>
             </div>
           </div>
         </div>

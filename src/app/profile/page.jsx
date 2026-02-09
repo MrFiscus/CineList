@@ -136,7 +136,7 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div className="selected">
+          <div className="selected profile-card">
             <div className="selected-label">Library Stats</div>
             <div className="selected-name">{stats.totalMovies} movies logged</div>
             <div className="selected-meta">{stats.countriesWithMovies} countries with movies</div>
@@ -145,13 +145,13 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div className="selected">
+          <div className="selected profile-card">
             <div className="selected-label">Email</div>
             <div className="selected-name">{user.email || "-"}</div>
             <div className="selected-meta">User ID: {user.id}</div>
           </div>
 
-          <div className="selected">
+          <div className="selected profile-card">
             <div className="selected-label">Account Details</div>
             <div className="selected-name">
               {user.user_metadata?.display_name || user.user_metadata?.full_name || "CineList Member"}
